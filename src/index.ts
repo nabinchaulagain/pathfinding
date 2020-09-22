@@ -1,6 +1,5 @@
 import config from "./config";
-import GameMap from "./Map";
-import Squares from "./Squares";
+import Board from "./Board";
 
 const canvas = document.querySelector("#canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -8,7 +7,11 @@ const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 canvas.width = config.WIDTH;
 canvas.height = config.WIDTH;
 
-const map = new GameMap(config.WIDTH, config.ROWS);
-map.draw(ctx);
-const squares = new Squares(config.WIDTH, config.ROWS);
-squares.draw(ctx);
+const board = new Board(config.WIDTH, config.ROWS, canvas);
+board.draw(ctx);
+board.attachEventListeners();
+
+setInterval(() => {
+  board.clearBoard(ctx);
+  board.draw(ctx);
+}, 50);

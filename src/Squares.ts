@@ -15,12 +15,15 @@ class Squares {
       }
     }
   }
-  draw(ctx: CanvasRenderingContext2D) {
+  draw(ctx: CanvasRenderingContext2D): void {
     for (const rows of this.squares) {
       for (const square of rows) {
         square.draw(ctx);
       }
     }
+  }
+  getSquare(row: number, col: number): Square {
+    return this.squares[row][col];
   }
 }
 

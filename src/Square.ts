@@ -1,9 +1,10 @@
-enum SquareColor {
+enum Color {
   Red = "red",
   Green = "green",
   Blue = "blue",
   Black = "black",
   White = "white",
+  Yellow = "yellow",
 }
 
 class Square {
@@ -12,13 +13,13 @@ class Square {
   width: number;
   x: number;
   y: number;
-  color: SquareColor;
+  color: Color;
 
   constructor(
     row: number,
     col: number,
     width: number,
-    color: SquareColor = SquareColor.Green
+    color: Color = Color.White
   ) {
     this.row = row;
     this.col = col;
@@ -32,6 +33,21 @@ class Square {
     ctx.fillRect(this.x, this.y, this.width, this.width);
     ctx.fill();
   }
+  reset() {
+    this.color = Color.White;
+  }
+  makeObstacle() {
+    this.color = Color.Black;
+  }
+  makeGoal() {
+    this.color = Color.Red;
+  }
+  makeStart() {
+    this.color = Color.Yellow;
+  }
+  makeVisited() {
+    this.color = Color.Green;
+  }
 }
 
-export { Square, SquareColor };
+export { Square, Color };
