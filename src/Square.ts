@@ -1,3 +1,5 @@
+import Squares from "./Squares";
+
 enum Color {
   Red = "red",
   Green = "green",
@@ -7,6 +9,11 @@ enum Color {
   Yellow = "yellow",
 }
 
+type Point = {
+  x: number;
+  y: number;
+};
+
 class Square {
   row: number;
   col: number;
@@ -14,6 +21,7 @@ class Square {
   x: number;
   y: number;
   color: Color;
+  neighbors: Square[] = [];
 
   constructor(
     row: number,
@@ -33,21 +41,68 @@ class Square {
     ctx.fillRect(this.x, this.y, this.width, this.width);
     ctx.fill();
   }
-  reset() {
+  getPos(): Point {
+    return { x: this.row, y: this.col };
+  }
+
+  reset(): void {
     this.color = Color.White;
   }
-  makeObstacle() {
+  makeObstacle(): void {
     this.color = Color.Black;
   }
-  makeGoal() {
+  makeGoal(): void {
     this.color = Color.Red;
   }
-  makeStart() {
+  makeStart(): void {
     this.color = Color.Yellow;
   }
-  makeVisited() {
+  makeVisited(): void {
     this.color = Color.Green;
+  }
+  isObstacle(): boolean {
+    return this.color === Color.Black;
+  }
+  isGoal(): boolean {
+    return this.color === Color.Red;
+  }
+  isStart(): boolean {
+    return this.color === Color.Yellow;
+  }
+  isVisited(): boolean {
+    return this.color === Color.Green;
+  }
+  updateNeighbors(squares: Squares, numRows: number): void {
+    this.neighbors = [];
+    //up
+    if (
+      this.row - 1 >= 0 &&
+      !squares.getSquare(this.row - 1, this.col).isObstacle()
+    ) {
+      this.neighbors.push(squares.getSquare(this.row - 1, this.col));
+    }
+    //down
+    if (
+      this.row + 1 < numRows &&
+      !squares.getSquare(this.row + 1, this.col).isObstacle()
+    ) {
+      this.neighbors.push(squares.getSquare(this.row + 1, this.col));
+    }
+    //left
+    if (
+      this.col - 1 >= 0 &&
+      !squares.getSquare(this.row, this.col - 1).isObstacle()
+    ) {
+      this.neighbors.push(squares.getSquare(this.row, this.col - 1));
+    }
+    //right
+    if (
+      this.col + 1 < numRows &&
+      !squares.getSquare(this.row, this.col + 1).isObstacle()
+    ) {
+      this.neighbors.push(squares.getSquare(this.row, this.col + 1));
+    }
   }
 }
 
-export { Square, Color };
+export { Square, Color, Point };

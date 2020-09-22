@@ -25,6 +25,16 @@ class Squares {
   getSquare(row: number, col: number): Square {
     return this.squares[row][col];
   }
+  updateNeighbors(): void {
+    for (const row of this.squares) {
+      for (const square of row) {
+        square.updateNeighbors(this, this.rows);
+      }
+    }
+  }
+  getNumSquares(): number {
+    return this.squares.length * this.squares[0].length;
+  }
 }
 
 export default Squares;
