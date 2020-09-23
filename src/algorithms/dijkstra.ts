@@ -17,8 +17,8 @@ const dijkstra = async function (board: Board): Promise<void> {
     const current = openList.pop();
     const currentSquare = current.square;
     if (currentSquare === board.goalSquare) {
-      console.log("solved");
-      backtrack(board, current);
+      await backtrack(board, current);
+      alert("solved");
       return;
     }
     const newScore = current.fscore + 1;
@@ -37,7 +37,7 @@ const dijkstra = async function (board: Board): Promise<void> {
     }
     await wait(config.ANIM_WAIT_TIME);
   }
-  console.log("unsolvable");
+  alert("this is unsolvable");
 };
 
 export default dijkstra;

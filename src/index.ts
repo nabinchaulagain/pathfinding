@@ -25,7 +25,6 @@ board.draw(ctx);
 board.attachEventListeners();
 
 algChooser.addEventListener("change", function () {
-  console.log("called it");
   board.solver = algorithms[algChooser.selectedIndex];
 });
 

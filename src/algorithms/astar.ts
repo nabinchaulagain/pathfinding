@@ -44,14 +44,14 @@ const astar = async function (board: Board): Promise<void> {
     const current = openList.pop();
     const currSquare = current.square;
     if (currSquare === board.goalSquare) {
-      console.log("Solved");
       await backtrack(board, current);
+      alert("solved");
       return;
     }
     exploreNeighbors(fscores, gscores, hscores, current, board, openList);
     await wait(config.ANIM_WAIT_TIME);
   }
-  console.log("Unsolvable");
+  alert("this is unsolvable");
 };
 
 const exploreNeighbors = (

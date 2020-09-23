@@ -23,12 +23,9 @@ const bestFirstSearch = async function (board: Board): Promise<void> {
     openList.sort();
     const current = openList.pop();
     const currSquare = current.square;
-    // if (currSquare.isStart()) {
-    //   continue;
-    // }
     if (currSquare === board.goalSquare) {
-      console.log("solved");
-      backtrack(board, current);
+      await backtrack(board, current);
+      alert("solve");
       return;
     }
     for (const neighbor of currSquare.neighbors) {
@@ -46,6 +43,7 @@ const bestFirstSearch = async function (board: Board): Promise<void> {
     }
     await wait(config.ANIM_WAIT_TIME);
   }
+  alert("this is unsolvable");
 };
 
 export default bestFirstSearch;
