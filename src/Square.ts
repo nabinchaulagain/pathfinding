@@ -2,9 +2,9 @@ import Squares from "./Squares";
 
 enum Color {
   Red = "red",
-  Green = "green",
-  Blue = "blue",
-  Black = "black",
+  Green = "lightgreen",
+  Orange = "orange",
+  Grey = "grey",
   White = "white",
   Yellow = "yellow",
 }
@@ -49,7 +49,7 @@ class Square {
     this.color = Color.White;
   }
   makeObstacle(): void {
-    this.color = Color.Black;
+    this.color = Color.Grey;
   }
   makeGoal(): void {
     this.color = Color.Red;
@@ -60,8 +60,12 @@ class Square {
   makeVisited(): void {
     this.color = Color.Green;
   }
+  makeOptimal(): void {
+    this.color = Color.Orange;
+  }
+
   isObstacle(): boolean {
-    return this.color === Color.Black;
+    return this.color === Color.Grey;
   }
   isGoal(): boolean {
     return this.color === Color.Red;

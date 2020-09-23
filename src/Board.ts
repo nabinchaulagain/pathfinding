@@ -2,6 +2,7 @@ import Squares from "./Squares";
 import { Square, Point } from "./Square";
 import { MouseClick } from "./utils";
 import { PathfindingList, ListEntry } from "./PathfindingList";
+import config from "./config";
 
 class Board {
   width: number;
@@ -13,6 +14,7 @@ class Board {
   startSquare: Square | null = null;
   goalSquare: Square | null = null;
   heldBtn: MouseClick | null = null;
+  startedSolving: boolean = false;
 
   constructor(width: number, rows: number, canvas: HTMLCanvasElement) {
     this.width = width;
@@ -47,19 +49,31 @@ class Board {
 
   attachEventListeners() {
     this.canvas.addEventListener("mousedown", (event) => {
+      if (this.startedSolving) {
+        return;
+      }
       this.heldBtn = event.which;
       this.handleHold(event);
       this.mouseDown = true;
     });
     this.canvas.addEventListener("mousemove", (event) => {
+      if (this.startedSolving) {
+        return;
+      }
       if (this.mouseDown) {
         this.handleHold(event);
       }
     });
     document.addEventListener("mouseup", () => {
+      if (this.startedSolving) {
+        return;
+      }
       this.heldBtn = null;
       this.mouseDown = false;
     });
+    document
+      .querySelector("#startVisBtn")
+      ?.addEventListener("click", () => this.startSolving());
   }
 
   handleHold(event: MouseEvent): void {
@@ -85,7 +99,6 @@ class Board {
     ) {
       selectedSquare.makeGoal();
       this.goalSquare = selectedSquare;
-      this.solve();
     } else {
       if (
         selectedSquare !== this.startSquare &&
@@ -110,20 +123,21 @@ class Board {
     this.draw(ctx);
   }
 
-  backtrack(goal: ListEntry): void {
-    const nodes = [];
+  async backtrack(goal: ListEntry): Promise<void> {
     let curr = goal;
     while (true) {
-      nodes.push(curr.square.row + "," + curr.square.col);
       if (curr.from === null) {
         break;
       }
+      if (curr.square !== this.goalSquare && curr.square !== this.startSquare) {
+        curr.square.makeOptimal();
+      }
       curr = curr.from;
+      await wait(config.ANIM_WAIT_TIME);
     }
-    console.log(nodes.reverse());
   }
 
-  solve(): void {
+  async solve(): Promise<void> {
     const openList = new PathfindingList();
     this.squares.updateNeighbors();
     if (!this.startSquare || !this.goalSquare) {
@@ -161,7 +175,7 @@ class Board {
       const currSquare = current.square;
       if (currSquare === this.goalSquare) {
         console.log("Solved");
-        this.backtrack(current);
+        await this.backtrack(current);
         return;
       }
       const gscore_neighbors = gscores[currSquare.row][currSquare.col] + 1;
@@ -181,12 +195,23 @@ class Board {
           });
         }
       }
+      await wait(config.ANIM_WAIT_TIME);
     }
-    console.log("unsolvable");
+    console.log("Unsolvable");
+  }
+  startSolving(): void {
+    this.startedSolving = true;
+    this.solve();
   }
 }
 
 const distance = (point1: Point, point2: Point): number =>
   Math.abs(point2.x - point1.x) + Math.abs(point2.y - point1.y);
+
+const wait = function (millis: number): Promise<void> {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, millis);
+  });
+};
 
 export default Board;

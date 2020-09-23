@@ -14,4 +14,4 @@ board.attachEventListeners();
 setInterval(() => {
   board.clearBoard(ctx);
   board.draw(ctx);
-}, 50);
+}, config.REFRESH_RATE);

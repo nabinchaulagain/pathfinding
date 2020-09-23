@@ -5,3 +5,9 @@
   margin: auto;
   margin-top: 32px;
 }
+body {
+  text-align: center;
+}
+#startVisBtn {
+  margin-top: 16px;
+}
