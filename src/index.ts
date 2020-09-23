@@ -1,5 +1,6 @@
 import config from "./config";
 import Board from "./Board";
+import astar from "./astar";
 
 const canvas = document.querySelector("#canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -7,7 +8,7 @@ const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 canvas.width = config.WIDTH;
 canvas.height = config.WIDTH;
 
-const board = new Board(config.WIDTH, config.ROWS, canvas);
+const board = new Board(config.WIDTH, config.ROWS, canvas, astar);
 board.draw(ctx);
 board.attachEventListeners();
 

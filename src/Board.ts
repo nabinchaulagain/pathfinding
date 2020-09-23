@@ -1,9 +1,8 @@
 import Squares from "./Squares";
-import { Square, Point } from "./Square";
-import { MouseClick } from "./utils";
-import { PathfindingList, ListEntry } from "./PathfindingList";
-import config from "./config";
+import { Square } from "./Square";
+import { MouseClick } from "./utils/index";
 
+type PathfindingAlgorithm = (board: Board) => Promise<void>;
 class Board {
   width: number;
   rows: number;
@@ -15,14 +14,21 @@ class Board {
   goalSquare: Square | null = null;
   heldBtn: MouseClick | null = null;
   startedSolving: boolean = false;
+  solver: PathfindingAlgorithm;
 
-  constructor(width: number, rows: number, canvas: HTMLCanvasElement) {
+  constructor(
+    width: number,
+    rows: number,
+    canvas: HTMLCanvasElement,
+    solver: PathfindingAlgorithm
+  ) {
     this.width = width;
     this.rows = rows;
     this.squares = new Squares(width, rows);
     this.mouseDown = false;
     this.canvas = canvas;
     this.squareWidth = Math.floor(this.width / this.rows);
+    this.solver = solver;
   }
 
   drawOutline(ctx: CanvasRenderingContext2D): void {
@@ -123,95 +129,15 @@ class Board {
     this.draw(ctx);
   }
 
-  async backtrack(goal: ListEntry): Promise<void> {
-    let curr = goal;
-    while (true) {
-      if (curr.from === null) {
-        break;
-      }
-      if (curr.square !== this.goalSquare && curr.square !== this.startSquare) {
-        curr.square.makeOptimal();
-      }
-      curr = curr.from;
-      await wait(config.ANIM_WAIT_TIME);
-    }
-  }
-
-  async solve(): Promise<void> {
-    const openList = new PathfindingList();
-    this.squares.updateNeighbors();
-    if (!this.startSquare || !this.goalSquare) {
+  startSolving(): void {
+    if (this.startSquare === null || this.goalSquare === null) {
+      alert("Start and goal is not defined");
       return;
     }
-    openList.put({
-      square: this.startSquare,
-      fscore: distance(this.startSquare.getPos(), this.goalSquare.getPos()),
-      from: null,
-    });
-    const fscores: number[][] = [];
-    const hscores: number[][] = [];
-    const gscores: number[][] = [];
-    for (let i = 0; i < this.rows; i++) {
-      fscores.push([]);
-      hscores.push([]);
-      gscores.push([]);
-      for (let j = 0; j < this.rows; j++) {
-        fscores[i].push(Infinity);
-        gscores[i].push(Infinity);
-        hscores[i].push(
-          distance(
-            this.squares.getSquare(i, j).getPos(),
-            this.goalSquare.getPos()
-          )
-        );
-      }
-    }
-    fscores[this.startSquare.row][this.startSquare.col] =
-      hscores[this.startSquare.row][this.startSquare.col];
-    gscores[this.startSquare.row][this.startSquare.col] = 0;
-    while (!openList.isEmpty()) {
-      openList.sort();
-      const current = openList.pop();
-      const currSquare = current.square;
-      if (currSquare === this.goalSquare) {
-        console.log("Solved");
-        await this.backtrack(current);
-        return;
-      }
-      const gscore_neighbors = gscores[currSquare.row][currSquare.col] + 1;
-      for (const neighbor of currSquare.neighbors) {
-        if (gscore_neighbors < gscores[neighbor.row][neighbor.col]) {
-          gscores[neighbor.row][neighbor.col] = gscore_neighbors;
-          const fscoreNew =
-            gscore_neighbors + hscores[neighbor.row][neighbor.col];
-          fscores[neighbor.row][neighbor.col] = fscoreNew;
-          if (neighbor !== this.startSquare && neighbor !== this.goalSquare) {
-            neighbor.makeVisited();
-          }
-          openList.put({
-            from: current,
-            square: neighbor,
-            fscore: fscoreNew,
-          });
-        }
-      }
-      await wait(config.ANIM_WAIT_TIME);
-    }
-    console.log("Unsolvable");
-  }
-  startSolving(): void {
     this.startedSolving = true;
-    this.solve();
+    this.squares.updateNeighbors();
+    this.solver(this);
   }
 }
-
-const distance = (point1: Point, point2: Point): number =>
-  Math.abs(point2.x - point1.x) + Math.abs(point2.y - point1.y);
-
-const wait = function (millis: number): Promise<void> {
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, millis);
-  });
-};
 
 export default Board;
