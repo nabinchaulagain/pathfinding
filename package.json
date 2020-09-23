@@ -5,12 +5,21 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "parcel index.html"
+    "start": "parcel index.html",
+    "build": "rm -rf dist && parcel build index.html --public-url https://nabinchaulagain.github.io/pathfinding/",
+    "deploy": "gh-pages -d dist"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run build && npm run deploy"
+    }
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "gh-pages": "^3.1.0",
+    "husky": "^4.3.0",
     "parcel": "^1.12.4",
     "typescript": "^4.0.3"
   }
