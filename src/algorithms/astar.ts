@@ -1,10 +1,10 @@
-import Board from "./Board";
-import { ListEntry, PathfindingList } from "./utils/PathfindingList";
-import { wait, distance } from "./utils/index";
-import config from "./config";
-import { Square } from "./Square";
+import Board from "../Board";
+import { ListEntry, PathfindingList } from "../utils/PathfindingList";
+import { wait, distance, initializeScores } from "../utils/index";
+import config from "../config";
+import { Square } from "../Square";
 
-const backtrack = async function (
+export const backtrack = async function (
   board: Board,
   goal: ListEntry
 ): Promise<void> {
@@ -31,11 +31,11 @@ const astar = async function (board: Board): Promise<void> {
     fscore: distance(board.startSquare.getPos(), board.goalSquare.getPos()),
     from: null,
   });
-  const fscores: number[][] = initializeScore(board, () => Infinity);
-  const hscores: number[][] = initializeScore(board, (sq) =>
+  const fscores: number[][] = initializeScores(board, () => Infinity);
+  const hscores: number[][] = initializeScores(board, (sq) =>
     distance(sq.getPos(), (board.goalSquare as Square).getPos())
   );
-  const gscores: number[][] = initializeScore(board, () => Infinity);
+  const gscores: number[][] = initializeScores(board, () => Infinity);
   fscores[board.startSquare.row][board.startSquare.col] =
     hscores[board.startSquare.row][board.startSquare.col];
   gscores[board.startSquare.row][board.startSquare.col] = 0;
@@ -52,17 +52,6 @@ const astar = async function (board: Board): Promise<void> {
     await wait(config.ANIM_WAIT_TIME);
   }
   console.log("Unsolvable");
-};
-
-const initializeScore = (board: Board, scoreFunc: (sq: Square) => number) => {
-  const scores: number[][] = [];
-  for (let i = 0; i < board.rows; i++) {
-    scores.push([]);
-    for (let j = 0; j < board.rows; j++) {
-      scores[i].push(scoreFunc(board.squares.getSquare(i, j)));
-    }
-  }
-  return scores;
 };
 
 const exploreNeighbors = (
