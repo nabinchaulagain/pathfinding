@@ -35,6 +35,23 @@ class Squares {
   getNumSquares(): number {
     return this.squares.length * this.squares[0].length;
   }
+
+  reset(): void {
+    for (const row of this.squares) {
+      for (const square of row) {
+        square.reset();
+      }
+    }
+  }
+  resetPathSquares(): void {
+    for (const rows of this.squares) {
+      for (const square of rows) {
+        if (square.isVisited() || square.isOptimal()) {
+          square.reset();
+        }
+      }
+    }
+  }
 }
 
 export default Squares;

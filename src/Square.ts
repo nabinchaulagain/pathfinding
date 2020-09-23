@@ -76,6 +76,9 @@ class Square {
   isVisited(): boolean {
     return this.color === Color.Green;
   }
+  isOptimal(): boolean {
+    return this.color == Color.Orange;
+  }
   updateNeighbors(squares: Squares, numRows: number): void {
     this.neighbors = [];
     //up

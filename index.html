@@ -8,8 +8,21 @@
     <title>Pathfinding</title>
   </head>
   <body oncontextmenu="return false;">
+    <div>
+      Algorithm chosen:
+      <select id="algChooser">
+        <option>A star search</option>
+        <option>Best first search</option>
+        <option>Dijkstra's algorithm</option>
+      </select>
+    </div>
     <canvas id="canvas"></canvas>
-    <button id="startVisBtn">Start visualization</button>
+    <div>
+      <button id="startVisBtn">Start visualization</button>
+    </div>
+    <div style="margin-top: 16px">
+      <button id="resetBoardBtn">Reset board</button>
+    </div>
     <script src="src/index.ts"></script>
   </body>
 </html>

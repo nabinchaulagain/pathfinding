@@ -15,6 +15,7 @@ class Board {
   heldBtn: MouseClick | null = null;
   startedSolving: boolean = false;
   solver: PathfindingAlgorithm;
+  algFinished: boolean = false;
 
   constructor(
     width: number,
@@ -80,6 +81,10 @@ class Board {
     document
       .querySelector("#startVisBtn")
       ?.addEventListener("click", () => this.startSolving());
+
+    document
+      .querySelector("#resetBoardBtn")
+      ?.addEventListener("click", () => this.resetBoard());
   }
 
   handleHold(event: MouseEvent): void {
@@ -134,9 +139,23 @@ class Board {
       alert("Start and goal is not defined");
       return;
     }
+    if (this.algFinished) {
+      this.squares.resetPathSquares();
+    }
     this.startedSolving = true;
     this.squares.updateNeighbors();
     this.solver(this);
+    this.algFinished = true;
+    this.startedSolving = false;
+  }
+
+  resetBoard(): void {
+    if (this.startedSolving) {
+      return;
+    }
+    this.squares.reset();
+    this.startSquare = null;
+    this.goalSquare = null;
   }
 }
 

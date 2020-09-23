@@ -4,15 +4,30 @@ import astar from "./algorithms/astar";
 import dijkstra from "./algorithms/dijkstra";
 import bestFirstSearch from "./algorithms/bestFirstSearch";
 
+const algorithms = [astar, bestFirstSearch, dijkstra];
+
+const algChooser: HTMLSelectElement = document.querySelector(
+  "#algChooser"
+) as HTMLSelectElement;
+
 const canvas = document.querySelector("#canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-
 canvas.width = config.WIDTH;
 canvas.height = config.WIDTH;
 
-const board = new Board(config.WIDTH, config.ROWS, canvas, bestFirstSearch);
+const board = new Board(
+  config.WIDTH,
+  config.ROWS,
+  canvas,
+  algorithms[algChooser.selectedIndex]
+);
 board.draw(ctx);
 board.attachEventListeners();
+
+algChooser.addEventListener("change", function () {
+  console.log("called it");
+  board.solver = algorithms[algChooser.selectedIndex];
+});
 
 setInterval(() => {
   board.clearBoard(ctx);
