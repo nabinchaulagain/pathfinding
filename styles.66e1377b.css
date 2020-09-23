@@ -1,0 +1,2 @@
+#canvas{width:500px;height:500px;display:block;margin:16px auto auto}body{text-align:center}#legend,#startVisBtn{margin-top:16px}#legend>div{width:24px;height:24px;display:inline-block;margin:-7px 16px -7px 0;background:#000;border:1px solid #000}#legend>#start{background:#ff0}#legend>#goal{background:red}#legend>#optimal{background:#90ee90}#legend>#explored{background:orange}#legend>#obstacle{background:grey}
+/*# sourceMappingURL=https://nabinchaulagain.github.io/pathfinding/styles.66e1377b.css.map */
