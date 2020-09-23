@@ -16,13 +16,30 @@
         <option>Dijkstra's algorithm</option>
       </select>
     </div>
+    <div id="legend">
+      Start
+      <div id="start"></div>
+      Goal
+      <div id="goal"></div>
+      Optimal
+      <div id="optimal"></div>
+      Explored
+      <div id="explored"></div>
+      Obstacle
+      <div id="obstacle"></div>
+    </div>
     <canvas id="canvas"></canvas>
+    <div style="margin-top: 8px">
+      Hold down left click to draw squares and hold down right click to erase
+      squares
+    </div>
     <div>
       <button id="startVisBtn">Start visualization</button>
     </div>
     <div style="margin-top: 16px">
       <button id="resetBoardBtn">Reset board</button>
     </div>
+
     <script src="src/index.ts"></script>
   </body>
 </html>

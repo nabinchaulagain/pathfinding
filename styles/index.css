@@ -3,11 +3,41 @@
   height: 500px;
   display: block;
   margin: auto;
-  margin-top: 32px;
+  margin-top: 16px;
 }
 body {
   text-align: center;
 }
 #startVisBtn {
   margin-top: 16px;
+}
+#legend {
+  margin-top: 16px;
+}
+
+#legend > div {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  margin: -7px 0px;
+  margin-right: 16px;
+  background: black;
+  border: 1px solid black;
+}
+#legend > #start {
+  background: yellow;
+}
+
+#legend > #goal {
+  background: red;
+}
+#legend > #optimal {
+  background: lightgreen;
+}
+#legend > #explored {
+  background: orange;
+}
+
+#legend > #obstacle {
+  background: grey;
 }

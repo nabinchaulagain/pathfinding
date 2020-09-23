@@ -58,10 +58,10 @@ class Square {
     this.color = Color.Yellow;
   }
   makeVisited(): void {
-    this.color = Color.Green;
+    this.color = Color.Orange;
   }
   makeOptimal(): void {
-    this.color = Color.Orange;
+    this.color = Color.Green;
   }
 
   isObstacle(): boolean {
@@ -77,7 +77,7 @@ class Square {
     return this.color === Color.Green;
   }
   isOptimal(): boolean {
-    return this.color == Color.Orange;
+    return this.color === Color.Orange;
   }
   updateNeighbors(squares: Squares, numRows: number): void {
     this.neighbors = [];
