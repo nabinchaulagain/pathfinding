@@ -36,4 +36,8 @@ export class PathfindingList {
       return 0;
     });
   }
+
+  contains(square: Square): boolean {
+    return this.items.map((item) => item.square).includes(square);
+  }
 }
