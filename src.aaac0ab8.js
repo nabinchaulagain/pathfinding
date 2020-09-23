@@ -17,4 +17,4 @@ parcelRequire=function(e,r,t,n){var i,o="function"==typeof parcelRequire&&parcel
 },{"../utils/PathfindingList":"RBvX","../utils/index":"LPsV","../config":"foLc","./astar":"JFYH"}],"B6dB":[function(require,module,exports) {
 "use strict";var e=r(require("./config")),t=r(require("./Board")),a=r(require("./algorithms/dijkstra"));function r(e){return e&&e.__esModule?e:{default:e}}var u=document.querySelector("#canvas"),d=u.getContext("2d");u.width=e.default.WIDTH,u.height=e.default.WIDTH;var l=new t.default(e.default.WIDTH,e.default.ROWS,u,a.default);l.draw(d),l.attachEventListeners(),setInterval(function(){l.clearBoard(d),l.draw(d)},e.default.REFRESH_RATE);
 },{"./config":"foLc","./Board":"Fd3R","./algorithms/dijkstra":"GyvF"}]},{},["B6dB"], null)
-//# sourceMappingURL=/src.aaac0ab8.js.map
+//# sourceMappingURL=https://nabinchaulagain.github.io/pathfinding/src.aaac0ab8.js.map
