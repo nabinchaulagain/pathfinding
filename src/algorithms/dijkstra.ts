@@ -4,9 +4,9 @@ import Board from "../Board";
 import config from "../config";
 import { backtrack } from "./astar";
 
-const dijkstra = async function (board: Board): Promise<void> {
+const dijkstra = async function (board: Board): Promise<boolean> {
   if (board.startSquare === null || board.goalSquare === null) {
-    return;
+    throw new Error();
   }
   const openList = new PathfindingList();
   const fscores = initializeScores(board, () => Infinity);
@@ -18,8 +18,7 @@ const dijkstra = async function (board: Board): Promise<void> {
     const currentSquare = current.square;
     if (currentSquare === board.goalSquare) {
       await backtrack(board, current);
-      alert("solved");
-      return;
+      return true;
     }
     const newScore = current.fscore + 1;
     for (const neighbor of currentSquare.neighbors) {
@@ -37,7 +36,7 @@ const dijkstra = async function (board: Board): Promise<void> {
     }
     await wait(config.ANIM_WAIT_TIME);
   }
-  alert("this is unsolvable");
+  return false;
 };
 
 export default dijkstra;

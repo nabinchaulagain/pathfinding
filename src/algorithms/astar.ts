@@ -21,10 +21,10 @@ export const backtrack = async function (
   }
 };
 
-const astar = async function (board: Board): Promise<void> {
+const astar = async function (board: Board): Promise<boolean> {
   const openList = new PathfindingList();
   if (board.startSquare === null || board.goalSquare === null) {
-    return;
+    throw new Error();
   }
   openList.put({
     square: board.startSquare,
@@ -45,13 +45,12 @@ const astar = async function (board: Board): Promise<void> {
     const currSquare = current.square;
     if (currSquare === board.goalSquare) {
       await backtrack(board, current);
-      alert("solved");
-      return;
+      return true;
     }
     exploreNeighbors(fscores, gscores, hscores, current, board, openList);
     await wait(config.ANIM_WAIT_TIME);
   }
-  alert("this is unsolvable");
+  return false;
 };
 
 const exploreNeighbors = (

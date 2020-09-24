@@ -5,10 +5,11 @@ import { Square } from "../Square";
 import { backtrack } from "./astar";
 import config from "../config";
 
-const bestFirstSearch = async function (board: Board): Promise<void> {
+const bestFirstSearch = async function (board: Board): Promise<boolean> {
   if (board.startSquare === null || board.goalSquare === null) {
-    return;
+    return false;
   }
+
   const openList = new PathfindingList();
   openList.put({
     from: null,
@@ -25,8 +26,7 @@ const bestFirstSearch = async function (board: Board): Promise<void> {
     const currSquare = current.square;
     if (currSquare === board.goalSquare) {
       await backtrack(board, current);
-      alert("solve");
-      return;
+      return true;
     }
     for (const neighbor of currSquare.neighbors) {
       if (!visited.includes(neighbor)) {
@@ -43,7 +43,7 @@ const bestFirstSearch = async function (board: Board): Promise<void> {
     }
     await wait(config.ANIM_WAIT_TIME);
   }
-  alert("this is unsolvable");
+  return false;
 };
 
 export default bestFirstSearch;

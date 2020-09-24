@@ -2,7 +2,7 @@ import Squares from "./Squares";
 import { Square } from "./Square";
 import { MouseClick } from "./utils/index";
 
-type PathfindingAlgorithm = (board: Board) => Promise<void>;
+type PathfindingAlgorithm = (board: Board) => Promise<boolean>;
 class Board {
   width: number;
   rows: number;
@@ -134,19 +134,28 @@ class Board {
     this.draw(ctx);
   }
 
-  startSolving(): void {
+  async startSolving(): Promise<void> {
+    if (this.startedSolving) {
+      return;
+    }
     if (this.startSquare === null || this.goalSquare === null) {
       alert("Start and goal is not defined");
       return;
     }
+
     if (this.algFinished) {
       this.squares.resetPathSquares();
     }
     this.startedSolving = true;
     this.squares.updateNeighbors();
-    this.solver(this);
+    const solved = await this.solver(this);
     this.algFinished = true;
     this.startedSolving = false;
+    if (solved) {
+      alert("Solved");
+      return;
+    }
+    alert("Unsolvable");
   }
 
   resetBoard(): void {
